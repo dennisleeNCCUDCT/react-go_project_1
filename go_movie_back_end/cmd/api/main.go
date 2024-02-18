@@ -27,11 +27,11 @@ var app application//從application struc中提取資訊並做application設置
 
 //3.connect to a db
 app.Domain = "example.com"
-
+log.Println("starting application on port",port)
 //3.1Define routes and handlers
-//http.HandleFunc("/", app.handlerFunc)
+http.HandleFunc("/", Hello)//using http start handle function->Hello function in handler.go on http://8080"/""
 
-//4.start a server
+//4.starting a server
 err :=http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 if err!=nil{
 	log.Fatal(err)
