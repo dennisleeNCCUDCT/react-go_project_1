@@ -29,10 +29,10 @@ var app application//從application struc中提取資訊並做application設置
 app.Domain = "example.com"
 log.Println("starting application on port",port)
 //3.1Define routes and handlers
-http.HandleFunc("/", Hello)//using http start handle function->Hello function in handler.go on http://8080"/""
+//no need after adding app.routes function , http.HandleFunc("/", Hello)//using http start handle function->Hello function in handler.go on http://8080"/""
 
 //4.starting a server
-err :=http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+err :=http.ListenAndServe(fmt.Sprintf(":%d", port), app.routes())
 if err!=nil{
 	log.Fatal(err)
 }
