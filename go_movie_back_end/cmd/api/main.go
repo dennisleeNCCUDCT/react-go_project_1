@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,7 +12,7 @@ const port=8080
 
 type application struct {
 	Domain string
-
+DSN string
 }
 
 //
@@ -22,9 +23,10 @@ type application struct {
 func main(){
 	//1.設置應用程式config/setting up application config
 var app application//從application struc中提取資訊並做application設置
+
 	//2.read from cmd line
-
-
+flag.StringVar(&app.DSN,"dsn","host=localhost port=5432 user=postgres password=postgres dbname=movies sslmode=disable timezone=UTC connect_timeout=5","Postgres connect string")//for connection of postgres DB
+flag.Parse()
 //3.connect to a db
 app.Domain = "example.com"
 log.Println("starting application on port",port)
