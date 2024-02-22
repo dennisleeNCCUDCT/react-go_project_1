@@ -4,3 +4,7 @@ go run ./cmd/api    //start server
 
 
  //反引號：``
+
+
+//切換資料夾：
+cd ./go_movie_back_end
