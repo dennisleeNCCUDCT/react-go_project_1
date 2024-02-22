@@ -6,19 +6,30 @@ const Movies = () => {
 
   useEffect(() => {
     const headers = new Headers();
-    headers.append("Content-type", "application/json"); //insert headers to innitial api request
+    //
+    
+    headers.append("Accept", "application/json"); //insert headers to innitial api request
+   
+   //
     const requestOptions = {
       method: "Get", //remember to add "," after every parameter
       headers: headers, //remember to add "," after every parameter
     };
-    fetch(`http://localhost:8080/movies`, requestOptions) //fetch api請求，使用requestOptions參數
-      .then((response) => response.json())
-      .then((data) => {
-        setMovies(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    //fetch api請求，使用requestOptions參數
+    fetch(`http://localhost:8080/movies`, requestOptions)
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  })
+  .then((data) => {
+    console.log(data); // Log the data to see what is received
+    setMovies(data);
+  })
+  .catch((err) => {
+    console.error("Fetch error:", err);
+  });
   }, []);
 
   return (

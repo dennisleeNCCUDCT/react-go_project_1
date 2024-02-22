@@ -81,8 +81,10 @@ func (app *application) ALLMovies(w http.ResponseWriter, r *http.Request) { //ch
 		fmt.Println(err)
 
 	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json") //此行從 http.ResponseWriter (w) 中擷取標頭資料，將 "Content-Type" 標頭設置為 "application/json"。這表示對客戶端回應的主體內容將是 JSON 格式。
 	w.WriteHeader(http.StatusOK)                       //此行使用 http.ResponseWriter 介面 (w) 的 WriteHeader 方法將回應的 HTTP 狀態碼設置為 200 (OK)。這表示請求成功。
 	w.Write(out)
+
 	//
 }
