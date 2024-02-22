@@ -1,3 +1,6 @@
 go clean -cache
+//
+go run ./cmd/api    //start server
+
 
  //反引號：``
