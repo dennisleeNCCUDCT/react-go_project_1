@@ -1,20 +1,19 @@
-version: '3'
+version: "3" # 版本：'3' (指定 Docker Compose 文件格式版本)
 
-services:
-
-  postgres:
-    image: 'postgres:14.5'
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: movies
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
-    ports:
-      - '5432:5432'
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+services: # 服務：(定義要部署的服務)
+  postgres: # postgres：(定義一個名為 postgres 的服務)
+    image: "postgres:14.5" # 映像檔：'postgres:14.5' (指定要使用的 Docker 映像檔及其版本)
+    restart: always # 重新啟動：總是 (設定服務異常終止時自動重新啟動)
+    environment: # 環境變數：(設定容器內的環境變數)
+      POSTGRES_USER: postgres # POSTGRES_USER: postgres (設定 PostgreSQL 的使用者名稱)
+      POSTGRES_PASSWORD: postgres # POSTGRES_PASSWORD: postgres (設定 PostgreSQL 的密碼)
+      POSTGRES_DB: movies # POSTGRES_DB: movies (設定要創建的初始資料庫名稱)
+    logging: # 日誌：(配置日誌記錄選項)
+      options: # 選項：(設定日誌記錄選項)
+        max-size: 10m # 最大大小：10m (設定單個日誌檔案的最大大小)
+        max-file: "3" # 最大檔案數：'3' (設定保留的日誌檔案數量上限)
+    ports: # 埠：(映射容器與主機之間的埠)
+      - "5432:5432" # '5432:5432' (將容器的 5432 埠映射到主機的 5432 埠)
+    volumes: # 卷：(掛載資料卷以持久化資料)
+      - ./postgres-data:/var/lib/postgresql/data # ./postgres-data:/var/lib/postgresql/data (將主機上的 ./postgres-data 目錄掛載到容器的 /var/lib/postgresql/data 目錄)
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql # ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql (將主機上的 ./sql/create_tables.sql 檔案掛載到容器的 /docker-entrypoint-initdb.d 目錄，用於初始化資料庫結構)
