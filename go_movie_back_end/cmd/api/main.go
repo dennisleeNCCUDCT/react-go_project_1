@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"flag"
 	"fmt"
 	"log"
@@ -13,7 +14,8 @@ const port=8080
 type application struct {
 	Domain string
 DSN string
-}
+DB *sql.DB
+} 
 
 //
 //func (app application) handlerFunc(w http.ResponseWriter, r *http.Request) {
@@ -28,6 +30,13 @@ var app application//從application struc中提取資訊並做application設置
 flag.StringVar(&app.DSN,"dsn","host=localhost port=5432 user=postgres password=postgres dbname=movies sslmode=disable timezone=UTC connect_timeout=5","Postgres connect string")//for connection of postgres DB
 flag.Parse()
 //3.connect to a db
+conn, err:=app.connectDB()
+if err!=nil {
+	log.Fatal(err)
+}
+app.DB=conn
+
+//
 app.Domain = "example.com"
 log.Println("starting application on port",port)
 //3.1Define routes and handlers
