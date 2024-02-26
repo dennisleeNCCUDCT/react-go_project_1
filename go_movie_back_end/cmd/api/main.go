@@ -1,7 +1,8 @@
 package main
 
 import (
-	"database/sql"
+	"backend/internal/repository"
+	"backend/internal/repository/dbrepo"
 	"flag"
 	"fmt"
 	"log"
@@ -14,7 +15,7 @@ const port=8080
 type application struct {
 	Domain string
 DSN string
-DB *sql.DB
+DB repository.DatabaseRepo
 } 
 
 //
@@ -34,8 +35,8 @@ conn, err:=app.connectDB()
 if err!=nil {
 	log.Fatal(err)
 }
-app.DB=conn
-
+app.DB= &dbrepo.PostgresDBRepo{DB:conn}
+defer app.DB.Connection().Close()
 //
 app.Domain = "example.com"
 log.Println("starting application on port",port)
@@ -43,7 +44,7 @@ log.Println("starting application on port",port)
 //no need after adding app.routes function , http.HandleFunc("/", Hello)//using http start handle function->Hello function in handler.go on http://8080"/""
 
 //4.starting a server
-err :=http.ListenAndServe(fmt.Sprintf(":%d", port), app.routes())
+err =http.ListenAndServe(fmt.Sprintf(":%d", port), app.routes())
 if err!=nil{
 	log.Fatal(err)
 }

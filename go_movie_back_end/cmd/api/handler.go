@@ -1,12 +1,9 @@
 package main //let main.go to use this function
 
 import (
-	"backend/internal/models"
-	modles "backend/internal/models"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 // Hello is a handler function that responds with "hello, world".
@@ -44,35 +41,11 @@ func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 //
 
 func (app *application) ALLMovies(w http.ResponseWriter, r *http.Request) { //change from response to request
-	var movies []modles.Movie
-	//
-	rd, _ := time.Parse("2006-01-02", "1986-03-07")
-	//change sequence of rd(index:0) and rd(index:1)
-	//
-	highlander := models.Movie{
-		ID:           1,
-		Title:        "Highlander",
-		ReleaseDate:  rd,
-		MPAARating:   "R",
-		RunTime:      116,
-		Description:  "what",
-		CreatedAt:    time.Now(),
-		UpdatedField: time.Now(),
+	movies ,err :=app.DB.ALLMovies()
+	if err != nil {
+		fmt.Println(err)
+        return
 	}
-	movies = append(movies, highlander)
-	//
-	rd, _ = time.Parse("2006-01-02", "1981-06-12")
-	rotla := models.Movie{
-		ID:           2,
-		Title:        "Rolta",
-		ReleaseDate:  rd,
-		MPAARating:   "PG 13",
-		RunTime:      115,
-		Description:  "what2",
-		CreatedAt:    time.Now(),
-		UpdatedField: time.Now(),
-	}
-	movies = append(movies, rotla)
 	//
 	out, err := json.Marshal(movies)
 	// 1.Marshal is one of the default object in json package
