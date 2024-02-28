@@ -1,7 +1,6 @@
 package main //let main.go to use this function
 
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -33,7 +32,7 @@ func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 func (app *application) ALLMovies(w http.ResponseWriter, r *http.Request) { //change from response to request
 	movies ,err :=app.DB.ALLMovies()
 	if err != nil {
-		fmt.Println(err)
+		app.errorJSON(w, err)
         return
 	}
 	_=app.writeJSON(w,http.StatusOK, movies)
