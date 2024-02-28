@@ -7,5 +7,5 @@ import (
 
 type DatabaseRepo interface{
 Connection() *sql.DB
-	ALLMovies()([]*models.Movie, error)
+ALLMovies() ([]*models.Movie, error)//typo
 }

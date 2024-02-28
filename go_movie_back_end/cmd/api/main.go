@@ -35,7 +35,7 @@ conn, err:=app.connectDB()
 if err!=nil {
 	log.Fatal(err)
 }
-app.DB= &dbrepo.PostgresDBRepo{DB:conn}
+app.DB= &dbrepo.PostgresDBRepo{DB: conn}
 defer app.DB.Connection().Close()
 //
 app.Domain = "example.com"
