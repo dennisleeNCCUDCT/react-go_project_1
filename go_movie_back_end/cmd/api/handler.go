@@ -1,7 +1,6 @@
 package main //let main.go to use this function
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -25,17 +24,8 @@ func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 		Version: "1.0.1",
 	}
 	// initialize payload
-	out, err := json.Marshal(payload)
-	// 1.Marshal is one of the default object in json package
-	// 2.定義out(寫在瀏覽器inspector裡面的物件)和錯誤訊息為Marshal(使用payload當作參數)
-	if err != nil {
-		fmt.Println(err)
-
-	}
-	w.Header().Set("Content-Type", "application/json") //此行從 http.ResponseWriter (w) 中擷取標頭資料，將 "Content-Type" 標頭設置為 "application/json"。這表示對客戶端回應的主體內容將是 JSON 格式。
-	w.WriteHeader(http.StatusOK)                       //此行使用 http.ResponseWriter 介面 (w) 的 WriteHeader 方法將回應的 HTTP 狀態碼設置為 200 (OK)。這表示請求成功。
-	w.Write(out)                                       //此行將 out 變數的內容寫入回應主體。假設 out 變數是一個包含 JSON 編碼回應資料的位元組切片。這將實際的 JSON 資料作為回應主體發送給客戶端。
-	fmt.Fprintf(w, "hello, world from %s", app.Domain)
+	//fmt.Fprintf(w, "hello, world from %s", app.Domain)
+	_=app.writeJSON(w,http.StatusOK,payload)
 }
 
 //
@@ -46,18 +36,5 @@ func (app *application) ALLMovies(w http.ResponseWriter, r *http.Request) { //ch
 		fmt.Println(err)
         return
 	}
-	//
-	out, err := json.Marshal(movies)
-	// 1.Marshal is one of the default object in json package
-	// 2.定義out(寫在瀏覽器inspector裡面的物件)和錯誤訊息為Marshal(使用payload當作參數)
-	if err != nil {
-		fmt.Println(err)
-
-	}
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json") //此行從 http.ResponseWriter (w) 中擷取標頭資料，將 "Content-Type" 標頭設置為 "application/json"。這表示對客戶端回應的主體內容將是 JSON 格式。
-	w.WriteHeader(http.StatusOK)                       //此行使用 http.ResponseWriter 介面 (w) 的 WriteHeader 方法將回應的 HTTP 狀態碼設置為 200 (OK)。這表示請求成功。
-	w.Write(out)
-
-	//
+	_=app.writeJSON(w,http.StatusOK, movies)
 }
