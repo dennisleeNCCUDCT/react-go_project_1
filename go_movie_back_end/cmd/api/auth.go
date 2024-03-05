@@ -74,9 +74,14 @@ func (j *Auth) GenerateTokenPair(user *jwtUser) (TokenPairs, error) {
 	// 創建TokenPairs並用簽名的令牌填充 // Create TokenPairs and populate with signed tokens
 	var tokenPairs = TokenPairs{
 		Token:        signedAccessToken,
-		RefreshToken: signedRefreshToken,
+		RefreshToken: signedRefreshToken, 
 	}
 
 	// 返回TokenPairs // Return TokenPairs
 	return tokenPairs, nil
+}
+type Authenticator struct {
+    // Add fields related to authentication, such as secret keys, token expiration, etc.
+    SecretKey string
+    // Other fields...
 }

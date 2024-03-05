@@ -32,3 +32,10 @@ log.Println("Connect to Postgres")
 return connection, nil
 
 }
+//chatgpt instructions
+type Authenticator struct {
+    // Add fields related to authentication, such as secret keys, token expiration, etc.
+    SecretKey string
+    // Other fields...
+}
+

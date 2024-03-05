@@ -16,6 +16,7 @@ type application struct {
 	Domain string
 DSN string
 DB repository.DatabaseRepo
+auth *Authenticator
 } 
 
 //
