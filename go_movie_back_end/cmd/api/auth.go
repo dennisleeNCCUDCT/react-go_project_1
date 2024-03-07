@@ -7,16 +7,16 @@ import ( // 導入套件 // Import packages
 	"github.com/golang-jwt/jwt/v4" // JWT套件 // JWT package
 )
 
-type Auth struct { // 認證結構 // Auth struct
-	Issuer        string        // 發行者 // Issuer of the token
-	Audience      string        // 觀眾 // Audience of the token
-	Secret        string        // 秘密 // Secret key for signing the token
-	TokenExpiry   time.Duration // 令牌到期時間 // Expiry duration for the token
-	RefreshExpiry time.Duration // 刷新到期時間 // Expiry duration for the refresh token
-	CookieDomain  string        // Cookie域 // Domain for the cookie
-	CookiePath    string        // Cookie路徑 // Path for the cookie
-	CookieName    string        // Cookie名稱 // Name of the cookie
-}
+//type Authenticator struct { // 認證結構 // Auth struct
+//	Issuer        string        // 發行者 // Issuer of the token
+//	Audience      string        // 觀眾 // Audience of the token
+//	SecretKey     string        // 秘密 // Secret key for signing the token
+//	TokenExpiry   time.Duration // 令牌到期時間 // Expiry duration for the token
+//	RefreshExpiry time.Duration // 刷新到期時間 // Expiry duration for the refresh token
+//	CookieDomain  string        // Cookie域 // Domain for the cookie
+//	CookiePath    string        // Cookie路徑 // Path for the cookie
+//	CookieName    string        // Cookie名稱 // Name of the cookie
+//}
 
 type jwtUser struct { // JWT用戶結構 // JWT user struct
 	ID        int    `json:"id"`         // 用戶ID // User ID
@@ -34,7 +34,7 @@ type Claims struct { // 聲明結構 // Claims struct
 }
 
 // 生成令牌對函數 // Generate token pair function
-func (j *Auth) GenerateTokenPair(user *jwtUser) (TokenPairs, error) {
+func (a *Authenticator) GenerateTokenPair(user *jwtUser) (TokenPairs, error) {
 	// 創建一個令牌 // Create a new token
 	token := jwt.New(jwt.SigningMethodHS256)
 
@@ -42,16 +42,16 @@ func (j *Auth) GenerateTokenPair(user *jwtUser) (TokenPairs, error) {
 	claims := token.Claims.(jwt.MapClaims)
 	claims["name"] = fmt.Sprintf("%s %s", user.FirstName, user.LastName)
 	claims["sub"] = fmt.Sprint(user.ID)
-	claims["aud"] = j.Audience
-	claims["iss"] = j.Issuer
+	claims["aud"] = a.Audience
+	claims["iss"] = a.Issuer
 	claims["iat"] = time.Now().UTC().Unix()
 	claims["typ"] = "JWT"
 
 	// 設置JWT的到期時間 // Set the expiry for JWT
-	claims["exp"] = time.Now().UTC().Add(j.TokenExpiry).Unix()
+	claims["exp"] = time.Now().UTC().Add(a.TokenExpiry).Unix()
 
 	// 創建一個簽名的令牌 // Create a signed token
-	signedAccessToken, err := token.SignedString([]byte(j.Secret))
+	signedAccessToken, err := token.SignedString([]byte(a.SecretKey))
 	if err != nil {
 		return TokenPairs{}, err // 返回錯誤 // Return error
 	}
@@ -63,10 +63,10 @@ func (j *Auth) GenerateTokenPair(user *jwtUser) (TokenPairs, error) {
 	refreshTokenClaims["iat"] = time.Now().UTC().Unix()
 
 	// 設置刷新令牌的到期時間 // Set the expiry for the refresh token
-	refreshTokenClaims["exp"] = time.Now().UTC().Add(j.RefreshExpiry).Unix()
+	refreshTokenClaims["exp"] = time.Now().UTC().Add(a.RefreshExpiry).Unix()
 
 	// 創建簽名的刷新令牌 // Create a signed refresh token
-	signedRefreshToken, err := refreshToken.SignedString([]byte(j.Secret))
+	signedRefreshToken, err := refreshToken.SignedString([]byte(a.SecretKey))
 	if err != nil {
 		return TokenPairs{}, err // 返回錯誤 // Return error
 	}

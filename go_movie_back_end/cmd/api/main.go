@@ -15,7 +15,7 @@ type application struct {
 	Domain string
 	DSN    string
 	DB     repository.DatabaseRepo
-	auth   *Auth
+	auth   *Authenticator
 }
 
 //	func (app application) handlerFunc(w http.ResponseWriter, r *http.Request) {
